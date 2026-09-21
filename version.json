@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": "1.0.0",
-  "updatedAt": "2026-09-21T09:08:00Z",
+  "version": "1.0.1",
+  "updatedAt": "2026-09-21T09:18:00Z",
   "js": "https://raw.githubusercontent.com/Ploveooo/plove-entry2-js/main/home-app.js",
-  "sha256": "230a67efae7a62a3e00861ddcc7d115308257a06b51efceb75abc8b4b6dd1d38"
+  "sha256": "abf78e48a141a7272c5ca3773887c0d18351e6ae2d4081e37d1c4d03313cb76c"
 }
