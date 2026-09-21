@@ -436,6 +436,25 @@ async function prepareStream(id) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || '播放地址读取失败');
     if (run !== state.playbackRun) return;
+
+    const nativeBridge = window.webkit?.messageHandlers?.ploveNativeBridge;
+    if (nativeBridge) {
+      const title = state.episode?.title || detailTitle?.textContent || `视频 ${id}`;
+      nativeBridge.postMessage({
+        action: 'entry2Play',
+        payload: {
+          src: apiURL(data.manifestUrl),
+          title,
+          pageURL: `${API_BASE}/video/${encodeURIComponent(id)}`,
+          pageID: id,
+          imageURL: '',
+          userAgent: navigator.userAgent || ''
+        }
+      });
+      showPlayerState('');
+      return;
+    }
+
     const nativeHls = videoPlayer.canPlayType('application/vnd.apple.mpegurl');
     const appleWebKit = /Apple/i.test(navigator.vendor || '') || /iPad|iPhone|iPod/i.test(navigator.userAgent);
     if (nativeHls && appleWebKit) {
