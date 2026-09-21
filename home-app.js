@@ -81,6 +81,18 @@ function createCard(item, portrait = false) {
   card.querySelectorAll('a').forEach((link) => {
     link.href = itemHref(item);
     link.title = item.title;
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const href = itemHref(item);
+      const url = new URL(location.href);
+      url.search = href.startsWith('?') ? href.slice(1) : href;
+      history.pushState({ route: item.kind, id: item.id }, '', url);
+      if (item.kind === 'video') {
+        loadVideo(item.id);
+      } else {
+        loadSeries(item.id);
+      }
+    });
   });
   const frame = card.querySelector('.frame');
   frame.setAttribute('aria-label', item.title);
@@ -674,6 +686,30 @@ function dispatchRoute() {
   } else {
     loadHome(false, false);
   }
+}
+
+const backLink = document.querySelector('.back-link');
+if (backLink) {
+  backLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    const url = new URL(location.href);
+    url.search = '';
+    history.pushState({ route: 'home' }, '', url);
+    destroyPlayer();
+    loadHome(false, false);
+  });
+}
+
+const brandLink = document.querySelector('.brand-block');
+if (brandLink) {
+  brandLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    const url = new URL(location.href);
+    url.search = '';
+    history.pushState({ route: 'home' }, '', url);
+    destroyPlayer();
+    loadHome(false, false);
+  });
 }
 
 window.addEventListener('popstate', dispatchRoute);
